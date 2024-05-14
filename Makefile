@@ -2,13 +2,20 @@ CC = gcc
 
 LDLIBS = -lglut -lGLU -lGL
 
-# デフォルトターゲット
-all: main
+# 引数をTARGETとして扱うための設定
+TARGET = $(firstword $(MAKECMDGOALS))
 
-# 個別のターゲット
-src1: main.c
-	$(CC) main.c $(LDLIBS) -o main
+# デフォルトターゲット
+all: $(TARGET)
+
+# ターゲットを指定するためのルール
+$(TARGET): $(TARGET).c
+	$(CC) $(TARGET).c $(LDLIBS) -o $(TARGET)
 
 # クリーンアップルール
 clean:
-	rm -f main
+	rm -f $(TARGET)
+
+# Makefile の使い方のヒント
+help:
+	@echo "Usage: make <filename_without_extension>"
