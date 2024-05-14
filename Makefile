@@ -1,5 +1,14 @@
-CC:
-LDLIBS = -lglut -lGL -lGLU -lm- lX11
-.c:
-	$(CC) $(LIBLIBS) -o $@
+CC = gcc
 
+LDLIBS = -lglut -lGLU -lGL
+
+# デフォルトターゲット
+all: main
+
+# 個別のターゲット
+src1: main.c
+	$(CC) main.c $(LDLIBS) -o main
+
+# クリーンアップルール
+clean:
+	rm -f main
