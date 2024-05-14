@@ -12,16 +12,25 @@ void myKeyboard(unsigned char key, int x, int y)
 void myDisplay()
 {
     // グラフィックス用のフレームバッファ(メモリの一種)をクリア
+    glClear(GL_COLOR_BUFFER_BIT);
     // 描写する物体の色をRGBで[0,1]の範囲にて指定。
-    // ポリゴンを描くために、glBegin()とglEnd(),および、glVertex()を使う。
+    glColor3d(1.0, 0.0, 0.0);
+    // モノを描くために、glBegin()とglEnd(),および、glVertex()を使う。
     // glBegin()を呼び出す。
+    glBegin(GL_POLYGON); // ここではポリゴンの描写を指定
     // ポリゴンの角を描写1
+    glVertex2d(-0.5, -0.5);
     // ポリゴンの角を描写2
+    glVertex2d(0.5, -0.5);
     // ポリゴンの角を描写3
+    glVertex2d(0.5, 0.5);
     // ポリゴンの角を描写4
+    glVertex2d(-0.5, 0.5);
     // glEnd()を呼び出す。
+    glEnd();
     // このコマンド以前のGLコマンドを直ちにすべて実行する。つまり、描写を直ちに行うことを意味する。
     //      -> なお、glBegin()とglEnd()の間でglFlush()を呼び出すとエラーになる。
+    glFlush();
 }
 
 // 初期化処理をまとめて関数の中に定義しておく。
@@ -30,7 +39,14 @@ void myInit(char *progname)
     // ディスプレイモードの宣言
     // ウィンドウサイズの指定(単位はピクセル)
     // ウィンドウの左上の位置を指定する。
-    // キーボードコールバック(keyboad callback)
+    // ウィンドウを生成する
+    // glClearがカラーバッファをクリアして設定するときの色を指定する。
+}
+int main()
+{
+    // glutInit関数を呼び出す
+    // myInit関数を呼び出す
+    // ユーザーが定義したキーボード処理関数を呼び出す
     // ユーザーが定義した関数を呼び出す。
     //      -> myDisplayではWindow描写処理が定義してあるので、ここでは描写処理を行うことになる。
     // GLUTを用いたプログラムでは、これを呼び出さないといけなくて、これを呼び出すことで、イベント処理ループを開始する。
