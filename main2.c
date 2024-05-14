@@ -28,29 +28,19 @@ void myDisplay()
 void myInit(char *progname)
 {
     // ディスプレイモードの宣言
-    glutInitDisplayMode(GLUT_RGBA); // RGB and alpha mode
     // ウィンドウサイズの指定(単位はピクセル)
-    glutInitWindowSize(500, 400);
     // ウィンドウの左上の位置を指定する。
-    glutInitWindowPosition(0, 0);
     // ウィンドウを生成する
-    glutCreateWindow(progname);
     // glClearがカラーバッファをクリアして設定するときの色を指定する。
-    glClearColor(1.0, 1.0, 0.0, 0.0); // yellow
 }
 
 int main(int argc, char **argv)
 {
     // glutInit関数を呼び出す
-    glutInit(&argc, argv);
     // myInit関数を呼び出す
-    myInit(argv[0]);
     // ユーザーが定義したキーボード処理関数を呼び出す
-    glutKeyboardFunc(myKeyboard);
     // ユーザーが定義した関数を呼び出す。
-    glutDisplayFunc(myDisplay);
     //      -> myDisplayではWindow描写処理が定義してあるので、ここでは描写処理を行うことになる。
     // GLUTを用いたプログラムでは、これを呼び出さないといけなくて、これを呼び出すことで、イベント処理ループを開始する。
-    glutMainLoop();
     return 0;
 }
