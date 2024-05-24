@@ -3,6 +3,7 @@
 
 static int year = 0, day = 0;
 
+// ウィンドウの初期化
 void myInit(char *progname)
 {
     // RGBAの色指方法でダブルバッファリングを行う
@@ -18,6 +19,7 @@ void myInit(char *progname)
     glClearColor(0.0, 0.0, 0.0, 0.0); // 完全に透明な黒
 }
 
+// フレーム毎に行う処理を定義する関数(のちにコールバック関数として使う)
 void myDisplay(void)
 {
     // 一度画面を塗りつぶしてリセット
@@ -54,6 +56,7 @@ void myDisplay(void)
     glutSwapBuffers();
 }
 
+// ウィンドウのサイズが変更された時に呼び出される関数。
 void myReshape(int width, int height)
 {
     // 生成したウィンドウ全体を描写領域に設定。
@@ -75,4 +78,64 @@ void myReshape(int width, int height)
 
     // 視点と注視点、および視点の上方向となるベクトルをしていする。
     glutLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+}
+
+// キーボードの処理を行うために使う関数
+void myKeyboard(unsigned char key, int x, int y)
+{
+    int speed_of_day = 10, speed_of_year = 5;
+    switch (key)
+    {
+    case 'd':
+        day = (day + speed_of_day) % 360;
+
+        // 再描写
+        glutPostRedisplay();
+        break;
+    case 'D':
+        day = (day - speed_of_day) % 360;
+
+        // 再描写
+        glutPostRedisplay();
+        break;
+    case 'y':
+        year = (year + speed_of_year) % 360;
+
+        // 再描写
+        glutPostRedisplay();
+        break;
+    case 'Y':
+        year = (year - speed_of_year) % 360;
+
+        // 再描写
+        glutPostRedisplay();
+        break;
+    case 0x1B: // これは多分エスケープキー10進数
+        exit(0);
+        break;
+    default:
+        break;
+    }
+}
+
+// メインの処理を行うための関数
+// 処理のルート
+int main(int argc, char const *argv[])
+{
+    glutInit(&argc, argv);
+    myInit(argv[0]);
+
+    // キーボード操作関連の処理をコールバック関数で指定。
+    glutKeyboardFunc(myKeyboard);
+
+    // ウィンドウのサイズが変更された時に呼び出される関数。
+    glutReshapeFunc(myReshape);
+
+    // フレーム毎に行う処理をコールバック関数として定義してあるので、それをセッティング
+    glutDisplayFunc(myDisplay);
+
+    // 描写ループの開始
+    glutMainLoop();
+
+    return 0;
 }
