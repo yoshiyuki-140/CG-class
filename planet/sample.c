@@ -53,3 +53,26 @@ void myDisplay(void)
     // バックバッファとフロントバッファを入れ替え。
     glutSwapBuffers();
 }
+
+void myReshape(int width, int height)
+{
+    // 生成したウィンドウ全体を描写領域に設定。
+    // ビューポートとは、画像が実際に表示されるウィンドウの部分を指定します。
+    glViewport(0, 0, width, height);
+    // 操作する行列スタックを投影行列のスタックに設定する。
+    glMatrixMode(GL_PROJECTION); // ビューポート
+    // 現在選択されている行列を単位行列にリセットする。
+    glLoadIdentity();
+
+    // 透視投影変換行列を設定
+    gluPerspective(60.0, (double)width / (double)height, 0.1, 20.0);
+
+    // 操作する行列スタックをモデルビュー行列用の行列スタックに切り替える。
+    glMatrixMode(GL_MODELVIEW);
+
+    // 現在選択されている行列を単位行列にリセットする。
+    glLoadIdentity();
+
+    // 視点と注視点、および視点の上方向となるベクトルをしていする。
+    glutLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+}
