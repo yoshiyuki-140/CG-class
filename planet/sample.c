@@ -86,25 +86,25 @@ void myKeyboard(unsigned char key, int x, int y)
     int speed_of_day = 10, speed_of_year = 5;
     switch (key)
     {
-    case 'd':
+    case 'j':
         day = (day + speed_of_day) % 360;
 
         // 再描写
         glutPostRedisplay();
         break;
-    case 'D':
+    case 'k':
         day = (day - speed_of_day) % 360;
 
         // 再描写
         glutPostRedisplay();
         break;
-    case 'y':
+    case 'J':
         year = (year + speed_of_year) % 360;
 
         // 再描写
         glutPostRedisplay();
         break;
-    case 'Y':
+    case 'K':
         year = (year - speed_of_year) % 360;
 
         // 再描写
