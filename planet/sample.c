@@ -110,7 +110,7 @@ void myKeyboard(unsigned char key, int x, int y)
         // 再描写
         glutPostRedisplay();
         break;
-    case 0x1B: // これは多分エスケープキー10進数
+    case 27: // これは多分エスケープキー10進数
         exit(0);
         break;
     default:
