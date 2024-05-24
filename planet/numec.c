@@ -12,17 +12,14 @@ void myInit(char *progname)
     glutCreateWindow(progname);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
-
-    // 光源の設定
-    GLfloat light_position[] = {0.0, 0.0, 1.0, 1.0}; // 位置とタイプ（点光源）
-    GLfloat white_light[] = {1.0, 1.0, 1.0, 1.0};    // 白色光
-    GLfloat ambient_light[] = {0.2, 0.2, 0.2, 1.0};  // 環境光
+    GLfloat light_position[] = {0.0, 0.0, 1.0, 1.0};
+    GLfloat white_light[] = {1.0, 1.0, 1.0, 1.0};
+    GLfloat ambient_light[] = {0.2, 0.2, 0.2, 1.0};
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, white_light);
     glLightfv(GL_LIGHT0, GL_SPECULAR, white_light);
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
     glEnable(GL_LIGHT0);
-
     glClearColor(0.0, 0.0, 0.0, 0.0);
 }
 
@@ -30,36 +27,35 @@ void myDisplay(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glColor3d(1.0, 1.0, 1.0);
-
     glPushMatrix();
 
-    // ナメック星
-    glColor3d(0.0, 1.0, 0.5);
-    glutSolidSphere(0.2, 20, 16);
-
-    // 恒星A
+    // 恒星A (中心の黄色い星)
     glPushMatrix();
     glColor3d(1.0, 1.0, 0.0);
     glRotated((double)star1_year, 0.0, 1.0, 0.0);
-    glTranslated(1.0, 0.0, 0.0);
+    glTranslated(2.0, 0.0, 0.0);
     glutSolidSphere(0.1, 10, 8);
-    glPopMatrix();
 
-    // 恒星B
+    // 恒星B (恒星Aの周りのオレンジの星)
     glPushMatrix();
     glColor3d(1.0, 0.5, 0.0);
     glRotated((double)star2_year, 0.0, 1.0, 0.0);
-    glTranslated(1.5, 0.0, 0.0);
-    glutSolidSphere(0.1, 10, 8);
-    glPopMatrix();
+    glTranslated(0.5, 0.0, 0.0);
+    glutSolidSphere(0.07, 10, 8);
 
-    // 恒星C
-    glPushMatrix();
+    // 恒星C (恒星Bの周りの赤い星)
     glColor3d(1.0, 0.0, 0.0);
     glRotated((double)star3_year, 0.0, 1.0, 0.0);
-    glTranslated(2.0, 0.0, 0.0);
-    glutSolidSphere(0.1, 10, 8);
-    glPopMatrix();
+    glTranslated(0.3, 0.0, 0.0);
+    glutSolidSphere(0.05, 10, 8);
+
+    glPopMatrix(); // 恒星CのPopMatrix
+    glPopMatrix(); // 恒星BのPopMatrix
+    glPopMatrix(); // 恒星AのPopMatrix
+
+    // ナメック星 (緑色の惑星)
+    glColor3d(0.0, 1.0, 0.5);
+    glutSolidSphere(0.2, 20, 16);
 
     glPopMatrix();
     glutSwapBuffers();
@@ -78,7 +74,7 @@ void myReshape(int width, int height)
 
 void myKeyboard(unsigned char key, int x, int y)
 {
-    int speed_of_year = 5;
+    int speed_of_year = 1;
     switch (key)
     {
     case 'j':
