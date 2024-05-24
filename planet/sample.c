@@ -77,7 +77,7 @@ void myReshape(int width, int height)
     glLoadIdentity();
 
     // 視点と注視点、および視点の上方向となるベクトルをしていする。
-    glutLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 }
 
 // キーボードの処理を行うために使う関数
@@ -120,7 +120,7 @@ void myKeyboard(unsigned char key, int x, int y)
 
 // メインの処理を行うための関数
 // 処理のルート
-int main(int argc, char const *argv[])
+int main(int argc, char **argv)
 {
     glutInit(&argc, argv);
     myInit(argv[0]);
