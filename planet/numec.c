@@ -69,7 +69,7 @@ void myReshape(int width, int height)
     gluPerspective(60.0, (double)width / (double)height, 0.1, 20.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    gluLookAt(0.0, 3.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 }
 
 void myKeyboard(unsigned char key, int x, int y)
