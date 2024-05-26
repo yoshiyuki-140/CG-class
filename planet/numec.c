@@ -1,8 +1,31 @@
 #include <stdlib.h>
 #include <GL/glut.h>
+// SOILライブラリは以下のコマンドで利用しないといけない。
+// sudo apt-get update
+// sudo apt-get install libsoil-dev
+#include <SOIL/SOIL.h> // SOILライブラリを使用して画像を読み込む
 
 static int year = 0, day = 0;
 static int star1_year = 0, star2_year = 0, star3_year = 0, numec_year = 0;
+GLuint texture;
+
+void loadTexture()
+{
+    texture = SOIL_load_OGL_texture(
+        "path/to/your/green_planet_texture.jpg", // テクスチャ画像のパス
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_INVERT_Y);
+
+    if (texture == 0)
+    {
+        printf("Failed to load texture\n");
+    }
+
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+}
 
 void myInit(char *progname)
 {
@@ -12,6 +35,7 @@ void myInit(char *progname)
     glutCreateWindow(progname);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
+    glEnable(GL_TEXTURE_2D); // テクスチャを有効にする
     GLfloat light_position[] = {0.0, 0.0, 1.0, 1.0};
     GLfloat white_light[] = {1.0, 1.0, 1.0, 1.0};
     GLfloat ambient_light[] = {0.2, 0.2, 0.2, 1.0};
@@ -21,6 +45,8 @@ void myInit(char *progname)
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
     glEnable(GL_LIGHT0);
     glClearColor(0.0, 0.0, 0.0, 0.0);
+
+    loadTexture(); // テクスチャの読み込み
 }
 
 void myDisplay(void)
@@ -33,15 +59,19 @@ void myDisplay(void)
     // 太陽 B
     glPushMatrix();
     glColor3d(1.0, 1.0, 0.0);
+    GLfloat emissionB[] = {1.0, 1.0, 0.0, 1.0}; // 黄色の発光
+    glMaterialfv(GL_FRONT, GL_EMISSION, emissionB);
     glRotated((double)star1_year, 0.0, 1.0, 0.0);
-    glTranslated(2.0, 0.0, 0.0);
+    glTranslated(4.0, 0.0, 0.0);
     glutSolidSphere(0.4, 10 * evenness, 8 * evenness);
 
     // 太陽 C
     glPushMatrix();
     glColor3d(1.0, 0.5, 0.0);
+    GLfloat emissionC[] = {1.0, 0.5, 0.0, 1.0}; // オレンジ色の発光
+    glMaterialfv(GL_FRONT, GL_EMISSION, emissionC);
     glRotated((double)star2_year, 0.0, 1.0, 0.0);
-    glTranslated(0.5, 0.0, 0.0);
+    glTranslated(1.0, 0.0, 0.0);
     glutSolidSphere(0.3, 10 * evenness, 8 * evenness);
 
     glPopMatrix();
@@ -49,15 +79,23 @@ void myDisplay(void)
 
     // 太陽A (中心の太陽)
     glColor3d(0.0, 1.0, 0.5);
+    GLfloat emissionA[] = {1.0, 0.5, 0.0, 1.0}; // 黄色の発行
+    glMaterialfv(GL_FRONT, GL_EMISSION, emissionA);
     glutSolidSphere(1.0, 20 * evenness, 16 * evenness);
 
     // ナメック星
     glPushMatrix();
-    glColor3d(0.0, 0.0, 1.0); // 惑星の色
+    glBindTexture(GL_TEXTURE_2D, texture); // テクスチャをバインド
     glRotated((double)numec_year, 0.0, 1.0, 0.0);
-    glTranslated(4.0, 0.0, 0.0); // 外側の軌道に配置
-    glutSolidSphere(0.3, 10 * evenness, 8 * evenness);
-    glPopMatrix(); // 惑星のPopMatrix
+    glTranslated(7.0, 0.0, 0.0);                    // 外側の軌道に配置
+    GLfloat emissionNumec[] = {0.0, 0.0, 0.0, 1.0}; // 無発光
+    glMaterialfv(GL_FRONT, GL_EMISSION, emissionNumec);
+    GLUquadric *quad = gluNewQuadric();
+    gluQuadricTexture(quad, GL_TRUE);
+    gluSphere(quad, 0.3, 10 * evenness, 8 * evenness); // テクスチャ付きの球を描画
+    gluDeleteQuadric(quad);
+    glBindTexture(GL_TEXTURE_2D, 0); // テクスチャのバインド解除
+    glPopMatrix();                   // 惑星のPopMatrix
 
     glPopMatrix();
     glutSwapBuffers();
