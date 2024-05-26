@@ -1,8 +1,6 @@
 #include <stdlib.h>
 #include <GL/glut.h>
-// SOILライブラリは以下のコマンドで利用しないといけない。
-// sudo apt-get update
-// sudo apt-get install libsoil-dev
+#include <stdio.h>
 #include <SOIL/SOIL.h> // SOILライブラリを使用して画像を読み込む
 
 static int year = 0, day = 0;
@@ -12,19 +10,21 @@ GLuint texture;
 void loadTexture()
 {
     texture = SOIL_load_OGL_texture(
-        "path/to/your/green_planet_texture.jpg", // テクスチャ画像のパス
+        "textures/numec_texture.jpg", // テクスチャ画像のパス
         SOIL_LOAD_AUTO,
         SOIL_CREATE_NEW_ID,
         SOIL_FLAG_INVERT_Y);
 
     if (texture == 0)
     {
-        printf("Failed to load texture\n");
+        printf("Failed to load texture: %s\n", SOIL_last_result());
     }
 
     glBindTexture(GL_TEXTURE_2D, texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
 
 void myInit(char *progname)
@@ -87,15 +87,12 @@ void myDisplay(void)
     glPushMatrix();
     glBindTexture(GL_TEXTURE_2D, texture); // テクスチャをバインド
     glRotated((double)numec_year, 0.0, 1.0, 0.0);
-    glTranslated(7.0, 0.0, 0.0);                    // 外側の軌道に配置
-    GLfloat emissionNumec[] = {0.0, 0.0, 0.0, 1.0}; // 無発光
+    glTranslated(7.0, 0.0, 0.0); // 外側の軌道に配置
+    // GLfloat emissionNumec[] = {0.0, 0.0, 0.0, 1.0}; // 無発光
+    // glBindTexture(GL_TEXTURE_2D, 0); // テクスチャのバインド解除
     glMaterialfv(GL_FRONT, GL_EMISSION, emissionNumec);
-    GLUquadric *quad = gluNewQuadric();
-    gluQuadricTexture(quad, GL_TRUE);
-    gluSphere(quad, 0.3, 10 * evenness, 8 * evenness); // テクスチャ付きの球を描画
-    gluDeleteQuadric(quad);
-    glBindTexture(GL_TEXTURE_2D, 0); // テクスチャのバインド解除
-    glPopMatrix();                   // 惑星のPopMatrix
+    glutSolidSphere(0.3, 10 * evenness, 8 * evenness);
+    glPopMatrix(); // 惑星のPopMatrix
 
     glPopMatrix();
     glutSwapBuffers();
