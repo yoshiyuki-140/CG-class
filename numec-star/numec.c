@@ -42,7 +42,7 @@ void myDisplay(void)
     // END
 
     // マテリアルの設定
-    GLfloat mtrl_ambient[] = {0.0215, 0.1745, 0.0215, 1.0}, mtrl_diffuse[] = {0.07568, 0.61424, 0.07568, 1.0}, mtrl_specular[] = {0.5, 0.5, 0.5, 1.0}, mtrl_shiniess[] = {128.0};
+    // GLfloat mtrl_ambient[] = {0.0215, 0.1745, 0.0215, 1.0}, mtrl_diffuse[] = {0.07568, 0.61424, 0.07568, 1.0}, mtrl_specular[] = {0.5, 0.5, 0.5, 1.0}, mtrl_shiniess[] = {128.0};
     glMaterialfv(GL_FRONT, GL_AMBIENT, mtrl_ambient);    // マテリアルの環境光を設定
     glMaterialfv(GL_FRONT, GL_DIFFUSE, mtrl_diffuse);    // マテリアルの拡散光を設定
     glMaterialfv(GL_FRONT, GL_SPECULAR, mtrl_specular);  // マテリアルの鏡面光を設定
@@ -94,6 +94,16 @@ void myReshape(int width, int height)
     gluLookAt(0.0, 8.0, 12.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);         // 視点を設定
 }
 
+void myIdle(void)
+{
+    int speed_of_year = 2; // 回転速度
+    star1_year = (star1_year + 2 * speed_of_year) % 360;
+    star2_year = (star2_year + 3 * speed_of_year) % 360;
+    star3_year = (star3_year + 4 * speed_of_year) % 360;
+    numec_year = (numec_year + speed_of_year) % 360;
+    glutPostRedisplay(); // 再描画
+}
+
 void myKeyboard(unsigned char key, int x, int y)
 {
     int speed_of_year = 2; // 回転速度
@@ -127,6 +137,7 @@ int main(int argc, char **argv)
     myInit(argv[0]);              // 初期設定関数を呼び出し
     glutKeyboardFunc(myKeyboard); // キーボード関数を設定
     glutReshapeFunc(myReshape);   // リサイズ関数を設定
+    glutIdleFunc(myIdle);         // アイドル関数を設定
     glutDisplayFunc(myDisplay);   // ディスプレイ関数を設定
     glutMainLoop();               // イベント処理ループに入る
     return 0;
