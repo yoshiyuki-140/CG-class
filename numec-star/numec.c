@@ -3,6 +3,8 @@
 #include <stdio.h>
 
 static int star1_year = 0, star2_year = 0, star3_year = 0, numec_year = 0;
+// エメラルドのマテリアル
+GLfloat mtrl_ambient[] = {0.0215, 0.1745, 0.0215, 1.0}, mtrl_diffuse[] = {0.07568, 0.61424, 0.07568, 1.0}, mtrl_specular[] = {0.633, 0.727811, 0.633, 1.0}, mtrl_shiniess[] = {128.0};
 
 void myInit(char *progname)
 {
@@ -38,8 +40,13 @@ void myDisplay(void)
     GLfloat emissionN[] = {0.0, 0.0, 0.0, 1.0};     // 発光しないように発光色を設定
     glMaterialfv(GL_FRONT, GL_EMISSION, emissionN); // マテリアルの発光色を設定
     // END
-    GLfloat mtrl_shiniess[] = {128.0};                   // 鏡面係数
-    glMaterialfv(GL_FRONT, GL_SHININESS, mtrl_shiniess); // 鏡面係数
+
+    // マテリアルの設定
+    GLfloat mtrl_ambient[] = {0.0215, 0.1745, 0.0215, 1.0}, mtrl_diffuse[] = {0.07568, 0.61424, 0.07568, 1.0}, mtrl_specular[] = {0.0, 0.0, 0.0, 1.0}, mtrl_shiniess[] = {128.0};
+    glMaterialfv(GL_FRONT, GL_AMBIENT, mtrl_ambient);    // マテリアルの環境光を設定
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mtrl_diffuse);    // マテリアルの拡散光を設定
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mtrl_specular);  // マテリアルの鏡面光を設定
+    glMaterialfv(GL_FRONT, GL_SHININESS, mtrl_shiniess); // マテリアルの鏡面反射指数を設定
 
     glRotated((double)numec_year, 0.0, 1.0, 0.0);      // Y軸周りに回転
     glTranslated(7.0, 0.0, 0.0);                       // 位置を移動
