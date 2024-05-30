@@ -38,6 +38,9 @@ void myDisplay(void)
     GLfloat emissionN[] = {0.0, 0.0, 0.0, 1.0};     // 発光しないように発光色を設定
     glMaterialfv(GL_FRONT, GL_EMISSION, emissionN); // マテリアルの発光色を設定
     // END
+    GLfloat mtrl_shiniess[] = {128.0};                   // 鏡面係数
+    glMaterialfv(GL_FRONT, GL_SHININESS, mtrl_shiniess); // 鏡面係数
+
     glRotated((double)numec_year, 0.0, 1.0, 0.0);      // Y軸周りに回転
     glTranslated(7.0, 0.0, 0.0);                       // 位置を移動
     glutSolidSphere(0.3, 10 * evenness, 8 * evenness); // 小さな球体を描画
