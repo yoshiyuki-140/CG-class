@@ -30,6 +30,19 @@ void myDisplay(void)
     glColor3d(1.0, 1.0, 1.0);                           // 描画色を白に設定
     glPushMatrix();                                     // 現在の行列を保存
 
+    // ナメック星（発光なし）
+    glPushMatrix();           // 現在の行列を保存
+    glColor3d(0.0, 0.5, 1.0); // 描画色をブルーグリーンに設定
+    // これが発光の設定
+    // START
+    GLfloat emissionN[] = {0.0, 0.0, 0.0, 1.0};     // 発光しないように発光色を設定
+    glMaterialfv(GL_FRONT, GL_EMISSION, emissionN); // マテリアルの発光色を設定
+    // END
+    glRotated((double)numec_year, 0.0, 1.0, 0.0);      // Y軸周りに回転
+    glTranslated(7.0, 0.0, 0.0);                       // 位置を移動
+    glutSolidSphere(0.3, 10 * evenness, 8 * evenness); // 小さな球体を描画
+    glPopMatrix();                                     // 保存した行列を復元
+
     // 太陽 B
     glPushMatrix();                                    // 現在の行列を保存
     glColor3d(1.0, 1.0, 0.0);                          // 描画色を黄色に設定
@@ -55,14 +68,6 @@ void myDisplay(void)
     GLfloat emissionA[] = {1.0, 0.5, 0.0, 1.0};         // 発光色を設定
     glMaterialfv(GL_FRONT, GL_EMISSION, emissionA);     // マテリアルの発光色を設定
     glutSolidSphere(1.0, 20 * evenness, 16 * evenness); // 大きな球体を描画
-
-    // ナメック星（発光なし）
-    glPushMatrix();                                    // 現在の行列を保存
-    glColor3d(0.0, 0.5, 1.0);                          // 描画色をブルーグリーンに設定
-    glRotated((double)numec_year, 0.0, 1.0, 0.0);      // Y軸周りに回転
-    glTranslated(7.0, 0.0, 0.0);                       // 位置を移動
-    glutSolidSphere(0.3, 10 * evenness, 8 * evenness); // 小さな球体を描画
-    glPopMatrix();                                     // 保存した行列を復元
 
     glPopMatrix();     // 保存した行列を復元
     glutSwapBuffers(); // バッファを交換して画面に表示
