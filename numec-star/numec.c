@@ -91,12 +91,12 @@ void myReshape(int width, int height)
     gluPerspective(60.0, (double)width / (double)height, 0.1, 20.0); // 透視投影を設定
     glMatrixMode(GL_MODELVIEW);                                      // モデルビュー行列を選択
     glLoadIdentity();                                                // モデルビュー行列を単位行列にリセット
-    gluLookAt(0.0, 6.0, 10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);         // 視点を設定
+    gluLookAt(0.0, 8.0, 12.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);         // 視点を設定
 }
 
 void myKeyboard(unsigned char key, int x, int y)
 {
-    int speed_of_year = 1; // 回転速度
+    int speed_of_year = 2; // 回転速度
     switch (key)
     {
     case 'j': // 'j'キーで前進
