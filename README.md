@@ -12,4 +12,5 @@ sudo apt-get install freeglut3-dev
 ```bash
 git clone https://github.com/nothings/stb.git
 sudo cp stb/stb_image.h /usr/local/include/
+rm -rf stb
 ```
