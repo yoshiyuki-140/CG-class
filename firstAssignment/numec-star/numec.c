@@ -41,7 +41,7 @@ void myDisplay(void)
     glMaterialfv(GL_FRONT, GL_EMISSION, emissionN); // マテリアルの発光色を設定
     // END
 
-    // マテリアルの設定
+    // ナメック星の材質の設定
     // GLfloat mtrl_ambient[] = {0.0215, 0.1745, 0.0215, 1.0}, mtrl_diffuse[] = {0.07568, 0.61424, 0.07568, 1.0}, mtrl_specular[] = {0.5, 0.5, 0.5, 1.0}, mtrl_shiniess[] = {128.0};
     glMaterialfv(GL_FRONT, GL_AMBIENT, mtrl_ambient);    // マテリアルの環境光を設定
     glMaterialfv(GL_FRONT, GL_DIFFUSE, mtrl_diffuse);    // マテリアルの拡散光を設定
