@@ -2,6 +2,7 @@
 #include <GL/glut.h>
 #include <stdio.h>
 #include "stb_image.h"
+#include <ctype.h>
 
 #define imageWidth 700
 #define imageHeight 402
@@ -11,6 +12,7 @@ static int star1_year = 0, star2_year = 0, star3_year = 0, numec_year = 0;
 GLfloat mtrl_ambient[] = {0.0215, 0.1745, 0.0215, 1.0}, mtrl_diffuse[] = {0.07568, 0.61424, 0.07568, 1.0}, mtrl_specular[] = {0.633, 0.727811, 0.633, 1.0}, mtrl_shiniess[] = {128.0};
 
 unsigned char texImage[imageHeight][imageWidth][3];
+
 void readPPMImage(char *filename)
 {
   FILE *fp;
@@ -22,49 +24,37 @@ void readPPMImage(char *filename)
     exit(1);
   }
   for (i = 0; i < 4; i++)
-  {
+  { // skip four in header
     while (1)
     {
-      // ヘッダーのコメントを読み飛ばす
       if ((ch = fgetc(fp)) != '#')
-      {
-        break;
-      }
-      // ダミーを読み込む
-      fgets(&texImage[0][0][0], 1024, fp);
-
-      // スペース文字をスキップする
-      while (sispace(ch))
-      {
-        ch = fgetc(fp);
-      }
+        break;                           // skip comment
+      fgets((char *)texImage, 1024, fp); // dummy read
+      while (isspace(ch))
+        ch = fgetc(fp); // skip space
     }
-    while (!isspace(ch)) // ヘッダーの読み込み
+    while (!isspace(ch))
+      ch = fgetc(fp); // read header
+                      /* Newline or other single terminator after header may exist. */
+    if (i < 3)
     {
-      ch = fgetc(fp);
-      if (i < 3)
-      {
-        while (isspace(ch)) // ターミネーターをスキップする
-        {
-          ch = fgetc(fp);
-        }
-      }
+      while (isspace(ch))
+        ch = fgetc(fp); // skip terminator
     }
   }
   fread(texImage, 1, imageWidth * imageHeight * 3, fp); // read RGB data
   fclose(fp);
 }
 
-// PPM形式画像データをラップする関数
 void setUpTexture(void)
 {
-  readPPMImage("./numec_texture.ppm");
+  readPPMImage("./textures/numec_texture.ppm");
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glTexImage(GL_TEXTURE_2D, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, texImage);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, texImage);
 }
 
 void myInit(char *progname)
