@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <GL/glut.h>
 
-#define imageWidth		64
-#define imageHeight		64
+#define imageWidth 64
+#define imageHeight 64
 
 unsigned char texImage[imageHeight][imageWidth][4];
 
@@ -13,9 +13,11 @@ void makeTexImage(void)
 {
 	int i, j, c;
 
-	for (i = 0; i < imageHeight; i++) {
-		for (j = 0; j < imageWidth; j++) {
-			c = ((((i&0x8)==0)^((j&0x8)==0)))*255;
+	for (i = 0; i < imageHeight; i++)
+	{
+		for (j = 0; j < imageWidth; j++)
+		{
+			c = ((((i & 0x8) == 0) ^ ((j & 0x8) == 0))) * 255;
 			texImage[i][j][0] = (unsigned char)c;
 			texImage[i][j][1] = (unsigned char)0;
 			texImage[i][j][2] = (unsigned char)~c;
@@ -33,11 +35,10 @@ void setupTextures(void)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,imageWidth ,imageHeight,0,
-								GL_RGBA, GL_UNSIGNED_BYTE, texImage);
-/* automatic mapping */
-	glTexGenf(GL_S,GL_TEXTURE_GEN_MODE,GL_OBJECT_LINEAR);
-	glTexGenf(GL_T,GL_TEXTURE_GEN_MODE,GL_OBJECT_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_UNSIGNED_BYTE, texImage);
+	/* automatic mapping */
+	glTexGenf(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+	glTexGenf(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
 	glEnable(GL_TEXTURE_GEN_S);
 	glEnable(GL_TEXTURE_GEN_T);
 }
@@ -72,7 +73,6 @@ void myDisplay(void)
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_TEXTURE_2D);
-
 }
 
 void myReshape(int width, int height)
@@ -88,16 +88,17 @@ void myReshape(int width, int height)
 
 void myKeyboard(unsigned char key, int x, int y)
 {
-	if (key == 27) exit (0);
+	if (key == 27)
+		exit(0);
 }
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
 	glutInit(&argc, argv);
 	myInit(argv[0]);
 	setupTextures();
 	glutKeyboardFunc(myKeyboard);
-	glutReshapeFunc (myReshape);
+	glutReshapeFunc(myReshape);
 	glutDisplayFunc(myDisplay);
 	glutMainLoop();
 	return 0;
