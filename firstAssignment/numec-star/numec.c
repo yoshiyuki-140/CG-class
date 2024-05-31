@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <GL/glut.h>
 #include <stdio.h>
+#include "stb_image.h"
 
 static int star1_year = 0, star2_year = 0, star3_year = 0, numec_year = 0;
 // エメラルドのマテリアル
