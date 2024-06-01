@@ -4,10 +4,9 @@
 #include "stb_image.h"
 #include <ctype.h>
 
-// #define imageWidth 700  // テクスチャ画像の縦幅
-// #define imageHeight 402 // テクスチャ画像の横幅
-#define imageWidth 1600 // テクスチャ画像の縦幅
-#define imageHeight 1066 // テクスチャ画像の横幅
+// In sample code, height and width is 256...
+#define imageWidth 256  // テクスチャ画像の縦幅
+#define imageHeight 256 // テクスチャ画像の横幅
 
 static int star1_year = 0, star2_year = 0, star3_year = 0, numec_year = 0;
 // エメラルドのマテリアル
@@ -52,7 +51,10 @@ void readPPMImage(char *filename)
 
 void setUpTexture(void)
 {
-  readPPMImage("./textures/hengao.ppm");
+  readPPMImage("./textures/edge_gif.ppm");
+  GLuint textureID;
+  glGenTextures(1, &textureID);
+  glBindTexture(GL_TEXTURE_2D, textureID);
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -191,13 +193,13 @@ void myKeyboard(unsigned char key, int x, int y)
 
 int main(int argc, char **argv)
 {
-  glutInit(&argc, argv); // GLUTを初期化
-  myInit(argv[0]);       // 初期設定関数を呼び出し
+  glutInit(&argc, argv);        // GLUTを初期化
+  myInit(argv[0]);              // 初期設定関数を呼び出し
   setUpTexture();               // テクスチャのセットアップ
-  glutKeyboardFunc(myKeyboard); // キーボード関数を設定 
+  glutKeyboardFunc(myKeyboard); // キーボード関数を設定
   glutReshapeFunc(myReshape);   // リサイズ関数を設定
-  glutIdleFunc(myIdle);         // アイドル関数を設定
-  glutDisplayFunc(myDisplay);   // ディスプレイ関数を設定
-  glutMainLoop();               // イベント処理ループに入る
+  // glutIdleFunc(myIdle);         // アイドル関数を設定 -> when texture mapping test is done, this code have to be commented out.
+  glutDisplayFunc(myDisplay); // ディスプレイ関数を設定
+  glutMainLoop();             // イベント処理ループに入る
   return 0;
 }
