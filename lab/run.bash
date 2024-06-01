@@ -1,0 +1,2 @@
+make automaticMap
+./automaticMap
