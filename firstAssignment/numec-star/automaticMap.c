@@ -45,23 +45,6 @@ void readPPMImage(char *filename)
 	fclose(fp);
 }
 
-void makeTexImage(void)
-{
-	int i, j, c;
-
-	for (i = 0; i < imageHeight; i++)
-	{
-		for (j = 0; j < imageWidth; j++)
-		{
-			c = ((((i & 0x8) == 0) ^ ((j & 0x8) == 0))) * 255;
-			texImage[i][j][0] = (unsigned char)c;
-			texImage[i][j][1] = (unsigned char)0;
-			texImage[i][j][2] = (unsigned char)~c;
-			texImage[i][j][3] = (unsigned char)255;
-		}
-	}
-}
-
 void setupTextures(void)
 {
 	// makeTexImage();
