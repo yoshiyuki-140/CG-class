@@ -6,8 +6,8 @@
 
 // #define imageWidth 700  // テクスチャ画像の縦幅
 // #define imageHeight 402 // テクスチャ画像の横幅
-#define imageWidth 256  // テクスチャ画像の縦幅
-#define imageHeight 256 // テクスチャ画像の横幅
+#define imageWidth 1600 // テクスチャ画像の縦幅
+#define imageHeight 1066 // テクスチャ画像の横幅
 
 static int star1_year = 0, star2_year = 0, star3_year = 0, numec_year = 0;
 // エメラルドのマテリアル
@@ -52,13 +52,13 @@ void readPPMImage(char *filename)
 
 void setUpTexture(void)
 {
-  readPPMImage("./textures/numec_texture.ppm");
+  readPPMImage("./textures/hengao.ppm");
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-  glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-  glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glTexImage2D(GL_TEXTURE_3D, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, texImage);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, texImage);
 }
 
 void myInit(char *progname)
@@ -89,7 +89,7 @@ void myDisplay(void)
 
   // ナメック星 : こいつは発光しない
   glPushMatrix(); // 現在の行列を保存
-  glEnable(GL_TEXTURE_3D);
+  glEnable(GL_TEXTURE_2D);
   glColor3d(0.0, 0.5, 1.0); // 描画色をブルーグリーンに設定
   // これが発光の設定
   // START
@@ -107,7 +107,8 @@ void myDisplay(void)
   glRotated((double)numec_year, 0.0, 1.0, 0.0);      // Y軸周りに回転
   glTranslated(7.0, 0.0, 0.0);                       // 位置を移動
   glutSolidSphere(0.3, 10 * evenness, 8 * evenness); // 小さな球体を描画
-  glDisable(GL_TEXTURE_3D);
+  // if following code executed, It seems like too dark numec star.
+  glDisable(GL_TEXTURE_2D);
   glPopMatrix(); // 保存した行列を復元
 
   // 太陽 B
@@ -192,8 +193,9 @@ int main(int argc, char **argv)
 {
   glutInit(&argc, argv); // GLUTを初期化
   myInit(argv[0]);       // 初期設定関数を呼び出し
-  // setUpTexture();               // テクスチャのセットアップ
-  glutKeyboardFunc(myKeyboard); // キーボード関数を設定 glutReshapeFunc(myReshape);   // リサイズ関数を設定
+  setUpTexture();               // テクスチャのセットアップ
+  glutKeyboardFunc(myKeyboard); // キーボード関数を設定 
+  glutReshapeFunc(myReshape);   // リサイズ関数を設定
   glutIdleFunc(myIdle);         // アイドル関数を設定
   glutDisplayFunc(myDisplay);   // ディスプレイ関数を設定
   glutMainLoop();               // イベント処理ループに入る
