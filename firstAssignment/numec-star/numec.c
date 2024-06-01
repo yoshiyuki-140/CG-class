@@ -5,8 +5,8 @@
 #include <ctype.h>
 
 // In sample code, height and width is 256...
-#define imageWidth 256  // テクスチャ画像の縦幅
-#define imageHeight 256 // テクスチャ画像の横幅
+#define imageWidth 700  // テクスチャ画像の縦幅
+#define imageHeight 403 // テクスチャ画像の横幅
 
 static int star1_year = 0, star2_year = 0, star3_year = 0, numec_year = 0;
 // エメラルドのマテリアル
@@ -51,11 +51,11 @@ void readPPMImage(char *filename)
 
 void setUpTexture(void)
 {
-  readPPMImage("./textures/edge_gif.ppm");
+  readPPMImage("./textures/mercator.ppm");
 
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, texImage);
