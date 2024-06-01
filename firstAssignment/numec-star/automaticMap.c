@@ -3,11 +3,47 @@
  */
 #include <stdio.h>
 #include <GL/glut.h>
+#include <ctype.h>
 
-#define imageWidth 64
-#define imageHeight 64
+#define imageWidth 256
+#define imageHeight 256
 
 unsigned char texImage[imageHeight][imageWidth][4];
+
+// 画像読み取り用の関数
+void readPPMImage(char *filename)
+{
+	FILE *fp;
+	int ch, i;
+
+	if ((fp = fopen(filename, "r")) == NULL) // 読み取りモードで指定されたPPMファイルを読み取り
+	{
+		// ファイル読み取りが失敗したときの処理
+		fprintf(stderr, "Cannot open ppm file %s\n", filename);
+		exit(1);
+	}
+	for (i = 0; i < 4; i++)
+	{ // skip four in header
+		while (1)
+		{
+			if ((ch = fgetc(fp)) != '#')
+				break;													 // skip comment
+			fgets((char *)texImage, 1024, fp); // dummy read
+			while (isspace(ch))
+				ch = fgetc(fp); // skip space
+		}
+		while (!isspace(ch))
+			ch = fgetc(fp); // read header
+											/* Newline or other single terminator after header may exist. */
+		if (i < 3)
+		{
+			while (isspace(ch))
+				ch = fgetc(fp); // skip terminator
+		}
+	}
+	fread(texImage, 1, imageWidth * imageHeight * 3, fp); // read RGB data
+	fclose(fp);
+}
 
 void makeTexImage(void)
 {
@@ -28,7 +64,8 @@ void makeTexImage(void)
 
 void setupTextures(void)
 {
-	makeTexImage();
+	// makeTexImage();
+	readPPMImage("./textures/edge_gif.ppm");
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
