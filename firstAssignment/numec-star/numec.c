@@ -51,21 +51,20 @@ void readPPMImage(char *filename)
 
 void setUpTexture(void)
 {
-  readPPMImage("./textures/mercator.ppm");
+  readPPMImage("./textures/mercator.ppm"); // テクスチャ画像を読み込む
 
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, texImage);
-  /* automatic mapping */
-  glTexGenf(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
-  glTexGenf(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
-  glEnable(GL_TEXTURE_GEN_S);
-  glEnable(GL_TEXTURE_GEN_T);
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);                                                                  // ピクセルストレージモードを設定
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);                                    // S方向のテクスチャラップモードを設定
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);                                    // T方向のテクスチャラップモードを設定
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);                                      // 拡大フィルタを設定
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);                                      // 縮小フィルタを設定
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, texImage); // テクスチャを設定
+
+  glTexGenf(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR); // S座標の自動生成モードを設定
+  glTexGenf(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR); // T座標の自動生成モードを設定
+  glEnable(GL_TEXTURE_GEN_S);                             // S座標の自動生成を有効化
+  glEnable(GL_TEXTURE_GEN_T);                             // T座標の自動生成を有効化
 }
-
 void myInit(char *progname)
 {
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH); // ディスプレイモードを初期化
